@@ -20,7 +20,6 @@ import com.djrapitops.plan.gathering.afk.AFKTracker;
 import com.djrapitops.plan.settings.config.PlanConfig;
 import com.djrapitops.plan.utilities.logging.ErrorContext;
 import com.djrapitops.plan.utilities.logging.ErrorLogger;
-import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.level.ServerPlayer;
@@ -84,7 +83,13 @@ public class FabricAFKListener implements FabricListener {
 
     private boolean checkPermission(ServerPlayer player, String permission) {
         if (FabricCommandManager.isPermissionsApiAvailable()) {
-            return Permissions.check(player, permission);
+            try {
+                Class<?> permissions = Class.forName("me.lucko.fabric.api.permissions.v0.Permissions");
+                return (Boolean) permissions.getMethod("check", ServerPlayer.class, String.class)
+                        .invoke(null, player, permission);
+            } catch (ReflectiveOperationException e) {
+                return false;
+            }
         } else {
             return false;
         }

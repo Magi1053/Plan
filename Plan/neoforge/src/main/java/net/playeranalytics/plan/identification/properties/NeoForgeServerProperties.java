@@ -39,7 +39,7 @@ public class NeoForgeServerProperties extends ServerProperties {
                         .orElse("Unknown")
                         + " (FFAPI)",
                 () -> (server.getLocalIp() == null) ? "" : server.getLocalIp(),
-                server.getProperties().maxPlayers.get()
+                server.getMaxPlayers()
         );
     }
 }
