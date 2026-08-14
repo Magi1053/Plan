@@ -4,15 +4,27 @@ apply plugin: "net.neoforged.moddev"
 apply plugin: "com.gradleup.shadow"
 
 ext {
-    neoVersion = "26.2.0.59"
-    minecraftVersion = "26.2"
-    // FFAPI has no 26.2 release yet; 26.1.2 is the stand-in until Sinytra ships 26.2.
-    ffapiVersion = "0.155.2+26.1.2+3.5.0"
+    neoVersion = "21.1.244"
+    minecraftVersion = "1.21.1"
+    ffapiVersion = "0.116.15+2.3.2+1.21.1"
 }
 
 configurations {
     shade
     implementation.extendsFrom shade
+}
+
+// Minecraft 1.21.1 declares strict versions for shared libraries; Plan common uses newer ones.
+// Force MC's versions on the compile classpath so ModDevGradle can resolve.
+configurations.configureEach {
+    resolutionStrategy {
+        force "org.apache.commons:commons-lang3:3.14.0"
+        force "org.apache.commons:commons-compress:1.26.0"
+        force "commons-codec:commons-codec:1.16.0"
+        force "commons-io:commons-io:2.15.1"
+        force "com.google.code.gson:gson:2.10.1"
+        force "org.slf4j:slf4j-api:2.0.9"
+    }
 }
 
 // Reuse Fabric platform code that is not Fabric-Loader specific.
@@ -48,6 +60,11 @@ sourceSets {
 neoForge {
     version = neoVersion
 
+    parchment {
+        mappingsVersion = "2024.11.17"
+        minecraftVersion = "1.21.1"
+    }
+
     runs {
         server {
             server()
@@ -74,15 +91,12 @@ dependencies {
     // Required at runtime; not shaded into PlanNeoForge.jar
     implementation "org.sinytra.forgified-fabric-api:forgified-fabric-api:$ffapiVersion"
 
-    // Optional permissions API (same package as Fabric); present when a NeoForge port is installed
-    compileOnly "me.lucko:fabric-permissions-api:0.7.0"
-
     testImplementation(testFixtures(project(":common")))
     testImplementation(project(":extensions:adventure"))
 }
 
 compileJava {
-    options.release = 25
+    options.release = 21
 }
 
 processResources {

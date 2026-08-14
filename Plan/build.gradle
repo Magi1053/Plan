@@ -11,7 +11,7 @@ plugins {
     id("base")
     id "org.sonarqube" version "7.3.1.8318"
     id "com.gradleup.shadow" version "9.6.1" apply false
-    id "net.fabricmc.fabric-loom" version "1.17.17" apply false
+    id "net.fabricmc.fabric-loom-remap" version "1.17.17" apply false
     id "net.neoforged.moddev" version "2.0.143" apply false
 }
 
@@ -150,8 +150,24 @@ subprojects {
         }
     }
 
+    // Fabric + NeoForge on this branch target Minecraft 1.21.1 (Java 21 runtime).
+    plugins.withId("java") {
+        if (project.name == "fabric" || project.name == "neoforge") {
+            java {
+                toolchain {
+                    languageVersion = JavaLanguageVersion.of(21)
+                }
+            }
+            tasks.withType(JavaCompile).configureEach {
+                options.release = 21
+            }
+        }
+    }
+
     tasks.withType(JavaCompile).configureEach {
-        options.release = 25
+        if (project.name != "fabric" && project.name != "neoforge") {
+            options.release = 25
+        }
         options.encoding = "UTF-8"
         options.fork = true
     }

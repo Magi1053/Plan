@@ -16,6 +16,8 @@ Plan supports multiple different platforms and versions; Spigot, Paper, Fabric, 
 
 Fabric and NeoForge each ship as separate jars (`PlanFabric-*.jar`, `PlanNeoForge-*.jar`). Other platforms share one jar.
 
+Minecraft **1.21.1** Fabric + NeoForge builds are on the `1.21.1` branch (`PlanFabric-*.jar`, `PlanNeoForge-*.jar`; Java 21, Fabric API / FFAPI 1.21.1).
+
 - [Version 5 Release trailer on Youtube](https://www.youtube.com/watch?v=BS_Ti9zkoRc)
 
 ## API

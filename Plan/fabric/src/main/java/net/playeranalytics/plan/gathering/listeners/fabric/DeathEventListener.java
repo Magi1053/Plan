@@ -66,7 +66,7 @@ public class DeathEventListener implements FabricListener {
             return;
         }
 
-        ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((world, killer, killedEntity, damageSource) ->
+        ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((world, killer, killedEntity) ->
                 {
                     if (!this.isEnabled) {
                         return;
@@ -131,7 +131,7 @@ public class DeathEventListener implements FabricListener {
 
     private String getItemInHand(ServerPlayer killer) {
         ItemStack itemInHand = killer.getMainHandItem();
-        return itemInHand.getItemName().getString();
+        return itemInHand.getHoverName().getString();
     }
 
     private Optional<ServerPlayer> getShooter(Projectile projectile) {

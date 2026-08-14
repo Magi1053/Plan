@@ -22,13 +22,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.network.protocol.handshake.ClientIntentionPacket;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
-import net.minecraft.server.players.NameAndId;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.GameType;
 import com.djrapitops.plan.PlanPlugin;
+import com.mojang.authlib.GameProfile;
 import net.playeranalytics.plan.gathering.FabricPlayerPositionTracker;
 
 import java.net.SocketAddress;
@@ -173,7 +173,7 @@ public class PlanFabricEvents {
          * @param profile the profile of the player
          * @param reason  the provided kick reason (null if player is permitted to join)
          */
-        void onLogin(SocketAddress address, NameAndId profile, Component reason);
+        void onLogin(SocketAddress address, GameProfile profile, Component reason);
     }
 
     @FunctionalInterface
