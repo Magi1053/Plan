@@ -150,8 +150,24 @@ subprojects {
         }
     }
 
+    // NeoForge 1.21.1 targets Java 21 (Mojang runtime for that line).
+    plugins.withId("java") {
+        if (project.name == "neoforge-1.21.1") {
+            java {
+                toolchain {
+                    languageVersion = JavaLanguageVersion.of(21)
+                }
+            }
+            tasks.withType(JavaCompile).configureEach {
+                options.release = 21
+            }
+        }
+    }
+
     tasks.withType(JavaCompile).configureEach {
-        options.release = 25
+        if (project.name != "neoforge-1.21.1") {
+            options.release = 25
+        }
         options.encoding = "UTF-8"
         options.fork = true
     }
